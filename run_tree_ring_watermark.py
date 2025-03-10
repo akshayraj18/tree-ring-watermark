@@ -28,7 +28,7 @@ def main(args):
     pipe = InversableStableDiffusionPipeline.from_pretrained(
         args.model_id,
         scheduler=scheduler,
-        torch_dtype=torch.float16,
+        torch_dtype=torch.float32, #change to torch.float16 if using cuda
         revision='fp16',
         )
     pipe = pipe.to(device)
@@ -39,6 +39,7 @@ def main(args):
         ref_tokenizer = open_clip.get_tokenizer(args.reference_model)
 
     # dataset
+    #print("Dataset:", args.dataset)
     dataset, prompt_key = get_dataset(args)
 
     tester_prompt = '' # assume at the detection time, the original prompt is unknown
